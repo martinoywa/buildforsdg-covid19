@@ -37,10 +37,22 @@ def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere, 
 
     return impact, severe
 
+def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact, severeCasesByRequestedTimeSevere, totalHospitalBeds):
+    """
+        Takes input as severe cases by requested time
+        for both impact and severe, and total hospital beds
+        and returns total beds for estimated positive patients.
+    """
+    available = 0.35 * totalHospitalBeds
+    impact = available - severeCasesByRequestedTimeImpact
+    severe = available - severeCasesByRequestedTimeSevere
+
+    return impact, severe
+
 
 def estimator(data):
     """
-        Takes in input data and returns it in a
+        Takes input data and returns it in a
         specified format.
     """
     currentlyInfectedImpact, currentlyInfectedSevere = currentlyInfected(data["reportedCases"])
@@ -51,15 +63,21 @@ def estimator(data):
                                                                             data["timeToElapse"]
                                                                             )
 
+    # 15% of infectionsByRequestedTime
+    severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
+    severeCasesByRequestedTimeSevere = int(0.15 * infectionsByRequestedTimeSevere)
+
     output = {
           "data": data,
           "impact": {
               "currentlyInfected": currentlyInfectedImpact,
-              "infectionsByRequestedTime": infectionsByRequestedTimeImpact
+              "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
+              "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact
               },
           "severeImpact": {
               "currentlyInfected": currentlyInfectedSevere,
-              "infectionsByRequestedTime": infectionsByRequestedTimeSevere
+              "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
+              "severeCasesByRequestedTime": infectionsByRequestedTimeSevere
               }
             }
 
