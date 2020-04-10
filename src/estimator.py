@@ -1,5 +1,6 @@
 import json
 
+
 def currentlyInfected(reportedCases):
     """
         Takes input as reportedCases and
@@ -38,9 +39,28 @@ def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere, 
 
 
 def estimator(data):
-    return data
+    """
+        Takes in input data and returns it in a
+        specified format.
+    """
+    currentlyInfectedImpact, currentlyInfectedSevere = currentlyInfected(data["reportedCases"])
+    infectionsByRequestedTimeImpact, infectionsByRequestedTimeSevere = infectionsByRequestedTime(
+                                                                            currentlyInfectedImpact,
+                                                                            currentlyInfectedSevere,
+                                                                            data["periodType"],
+                                                                            data["timeToElapse"]
+                                                                            )
 
+    output = {
+          "data": data,
+          "impact": {
+              "currentlyInfected": currentlyInfectedImpact,
+              "infectionsByRequestedTime": infectionsByRequestedTimeImpact
+              },
+          "severe": {
+              "currentlyInfected": currentlyInfectedSevere,
+              "infectionsByRequestedTime": infectionsByRequestedTimeSevere
+              }
+            }
 
-if __name__ == '__main__':
-    data = json.loads(open("src/input.json").read())
-    estimator(data)
+    return output
