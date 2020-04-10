@@ -43,7 +43,7 @@ def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact, severeCasesByR
         for both impact and severe, and total hospital beds
         and returns total beds for estimated positive patients.
     """
-    available = 0.35 * totalHospitalBeds
+    available = int(0.35 * totalHospitalBeds)
     impact = available - severeCasesByRequestedTimeImpact
     severe = available - severeCasesByRequestedTimeSevere
 
@@ -67,17 +67,25 @@ def estimator(data):
     severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
     severeCasesByRequestedTimeSevere = int(0.15 * infectionsByRequestedTimeSevere)
 
+    hospitalBedsByRequestedTimeImpact, hospitalBedsByRequestedTimeSevere = hospitalBedsByRequestedTime(
+                                                                                severeCasesByRequestedTimeImpact,
+                                                                                severeCasesByRequestedTimeSevere,
+                                                                                data["totalHospitalBeds"]
+                                                                                )
+
     output = {
           "data": data,
           "impact": {
               "currentlyInfected": currentlyInfectedImpact,
               "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
-              "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact
+              "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
+              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact
               },
           "severeImpact": {
               "currentlyInfected": currentlyInfectedSevere,
               "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
-              "severeCasesByRequestedTime": infectionsByRequestedTimeSevere
+              "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
+              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere
               }
             }
 
