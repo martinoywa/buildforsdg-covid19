@@ -75,18 +75,20 @@ def estimator(data):
 
     output = {
           "data": data,
-          "impact": {
-              "currentlyInfected": currentlyInfectedImpact,
-              "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
-              "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
-              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact
-              },
-          "severeImpact": {
-              "currentlyInfected": currentlyInfectedSevere,
-              "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
-              "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
-              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere
-              }
+          "estimate": {
+            "impact": {
+                "currentlyInfected": currentlyInfectedImpact,
+                "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
+                "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
+                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact
+                },
+            "severeImpact": {
+                "currentlyInfected": currentlyInfectedSevere,
+                "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
+                "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
+                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere
+                }
             }
+          }
 
     return output
