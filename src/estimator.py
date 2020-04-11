@@ -20,17 +20,18 @@ def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere,
     """
 
     # Currently infected doubles every 3 days.
-    if periodType == "days":
+    if periodType.lower() == "days":
         factor = int(timeToElapse/3)
         impact = currentlyInfectedImpact * pow(2, factor)
         severe = currentlyInfectedSevere * pow(2, factor)
-    elif periodType == "weeks":
+    elif periodType.lower() == "weeks":
         days = 7 * timeToElapse
         factor = int(days/3)
         impact = currentlyInfectedImpact * pow(2, factor)
         severe = currentlyInfectedSevere * pow(2, factor)
-    else:   # For months. Days default to 30 days.
-        factor = int(30/3)
+    else:
+        days = 30 * timeToElapse
+        factor = int(days/3)
         impact = currentlyInfectedImpact * pow(2, factor)
         severe = currentlyInfectedSevere * pow(2, factor)
 
@@ -76,11 +77,12 @@ def dollarsInFlight(infectionsByRequestedTimeImpact,
         severe = int((infectionsByRequestedTimeSevere *
                       avgDailyIncomePopulation *
                       avgDailyIncomeInUSD) / days)
-    else:   # For months. Days default to 30 days.
+    else:
+        days = 30 * timeToElapse
         impact = int((infectionsByRequestedTimeImpact *
-                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
+                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
         severe = int((infectionsByRequestedTimeSevere *
-                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
+                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
 
     return impact, severe
 
