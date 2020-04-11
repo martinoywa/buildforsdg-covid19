@@ -60,13 +60,13 @@ def estimator(data):
 
     days = timeEstimateDays(data["periodType"], data["timeToElapse"])
 
-    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (math.floor(days/3)))
-    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (math.floor(days/3)))
+    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (days/3))
+    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (days/3))
 
     severeCasesByRequestedTimeImpact = (0.15 * infectionsByRequestedTimeImpact)
     severeCasesByRequestedTimeSevere = (0.15 * infectionsByRequestedTimeSevere)
 
-    availableBeds = math.floor(0.35 * data["totalHospitalBeds"])
+    availableBeds = (0.35 * data["totalHospitalBeds"])
 
     hospitalBedsByRequestedTimeImpact = math.floor(availableBeds - severeCasesByRequestedTimeImpact)
     hospitalBedsByRequestedTimeSevere = math.floor(availableBeds - severeCasesByRequestedTimeSevere)
