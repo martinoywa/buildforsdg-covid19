@@ -63,13 +63,13 @@ def estimator(data):
     infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (math.floor(days/3)))
     infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (math.floor(days/3)))
 
-    severeCasesByRequestedTimeImpact = math.floor(0.15 * infectionsByRequestedTimeImpact)
-    severeCasesByRequestedTimeSevere = math.floor(0.15 * infectionsByRequestedTimeSevere)
+    severeCasesByRequestedTimeImpact = (0.15 * infectionsByRequestedTimeImpact)
+    severeCasesByRequestedTimeSevere = (0.15 * infectionsByRequestedTimeSevere)
 
     availableBeds = math.floor(0.35 * data["totalHospitalBeds"])
 
-    hospitalBedsByRequestedTimeImpact = availableBeds - severeCasesByRequestedTimeImpact
-    hospitalBedsByRequestedTimeSevere = availableBeds - severeCasesByRequestedTimeSevere
+    hospitalBedsByRequestedTimeImpact = math.floor(availableBeds - severeCasesByRequestedTimeImpact)
+    hospitalBedsByRequestedTimeSevere = math.floor(availableBeds - severeCasesByRequestedTimeSevere)
 
     casesForICUByRequestedTimeImpact = math.floor(0.05 * infectionsByRequestedTimeImpact)
     casesForICUByRequestedTimeSevere = math.floor(0.05 * infectionsByRequestedTimeSevere)
