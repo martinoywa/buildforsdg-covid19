@@ -49,6 +49,26 @@ def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact, severeCasesByR
 
     return impact, severe
 
+def dollarsInFlight(infectionsByRequestedTimeImpact, infectionsByRequestedTimeSevere, avgDailyIncomeInUSD, avgDailyIncomePopulation, periodType, timeToElapse):
+    """
+     Takes as input the infections by requeste time for impact
+     and severe, the average daily income and the population that
+     get's this income, and period type time to elapse. Returns daily
+     flight for both impact and severe.
+    """
+    if periodType == "days":
+        impact = int((infectionsByRequestedTimeImpact * avgDailyIncomePopulation * avgDailyIncomeInUSD) / timeToElapse)
+        severe = int((infectionsByRequestedTimeSevere * avgDailyIncomePopulation * avgDailyIncomeInUSD) / timeToElapse)
+    elif periodType == "weeks":
+        days = 7 * timeToElapse
+        impact = int((infectionsByRequestedTimeImpact * avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
+        severe = int((infectionsByRequestedTimeSevere * avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
+    else:   # For months. Days default to 30 days.
+        impact = int((infectionsByRequestedTimeImpact * avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
+        severe = int((infectionsByRequestedTimeSevere * avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
+
+    return impact, severe
+
 
 def estimator(data):
     """
@@ -81,6 +101,14 @@ def estimator(data):
     casesForVentilatorsByRequestedTimeImpact = int(0.02 * infectionsByRequestedTimeImpact)
     casesForVentilatorsByRequestedTimeSevere = int(0.02 * infectionsByRequestedTimeSevere)
 
+    dollarsInFlightImpact, dollarsInFlightSevere = dollarsInFlight(infectionsByRequestedTimeImpact,
+                                                                   infectionsByRequestedTimeSevere,
+                                                                   data["region"]["avgDailyIncomeInUSD"],
+                                                                   data["region"]["avgDailyIncomePopulation"],
+                                                                   data["periodType"],
+                                                                   data["timeToElapse"]
+                                                                   )
+
 
 
     output = {
@@ -92,7 +120,8 @@ def estimator(data):
                     "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
                     "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
                     "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
-                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact
+                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact,
+                    "dollarsInFlight": dollarsInFlightImpact
                     },
                 "severeImpact": {
                     "currentlyInfected": currentlyInfectedSevere,
@@ -100,7 +129,8 @@ def estimator(data):
                     "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
                     "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
                     "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
-                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere
+                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
+                    "dollarsInFlight": dollarsInFlightSevere
                     }
                 }
           }
