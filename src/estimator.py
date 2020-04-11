@@ -1,3 +1,6 @@
+import math
+
+
 def timeEstimateDays(periodType, timeToElapse):
     """
         Takes in period type and time to elapse
@@ -52,18 +55,18 @@ def estimator(data):
         Takes input data and returns it in a
         specified format.
     """
-    currentlyInfectedImpact = data["reportedCases"] * 10
-    currentlyInfectedSevere = data["reportedCases"] * 50
+    currentlyInfectedImpact = int(data["reportedCases"] * 10)
+    currentlyInfectedSevere = int(data["reportedCases"] * 50)
 
     days = timeEstimateDays(data["periodType"], data["timeToElapse"])
 
-    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (int(days/3)))
-    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (int(days/3)))
+    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (math.floor(days/3)))
+    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (math.floor(days/3)))
 
-    severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
-    severeCasesByRequestedTimeSevere = int(0.15 * infectionsByRequestedTimeSevere)
+    severeCasesByRequestedTimeImpact = math.floor(0.15 * infectionsByRequestedTimeImpact)
+    severeCasesByRequestedTimeSevere = math.floor(0.15 * infectionsByRequestedTimeSevere)
 
-    availableBeds = int(0.35 * data["totalHospitalBeds"])
+    availableBeds = marh.floor(0.35 * data["totalHospitalBeds"])
 
     hospitalBedsByRequestedTimeImpact = availableBeds - severeCasesByRequestedTimeImpact
     hospitalBedsByRequestedTimeSevere = availableBeds - severeCasesByRequestedTimeSevere
@@ -93,8 +96,8 @@ def estimator(data):
                 "currentlyInfected": currentlyInfectedImpact,
                 "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
                 "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
-                "hospitalBedsByRequestedTime":
-                    hospitalBedsByRequestedTimeImpact,
+                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
+
                 "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
                 "casesForVentilatorsByRequestedTime":
                     casesForVentilatorsByRequestedTimeImpact,
@@ -103,8 +106,8 @@ def estimator(data):
                 "currentlyInfected": currentlyInfectedSevere,
                 "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
                 "severeCasesByRequestedTime": severeCasesByRequestedTimeSevere,
-                "hospitalBedsByRequestedTime":
-                    hospitalBedsByRequestedTimeSevere,
+                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
+
                 "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
                 "casesForVentilatorsByRequestedTime":
                     casesForVentilatorsByRequestedTimeSevere,
