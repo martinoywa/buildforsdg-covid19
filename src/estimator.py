@@ -63,7 +63,7 @@ def estimator(data):
                                                                             data["timeToElapse"]
                                                                             )
 
-    # 15% of infectionsByRequestedTime
+    # 15% of infectionsByRequestedTime. Positives
     severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
     severeCasesByRequestedTimeSevere = int(0.15 * infectionsByRequestedTimeSevere)
 
@@ -73,22 +73,42 @@ def estimator(data):
                                                                                 data["totalHospitalBeds"]
                                                                                 )
 
+    # 5% of infectionsByRequestedTime that require ICU care.
+    casesForICUByRequestedTimeImpact = int(0.05 * infectionsByRequestedTimeImpact)
+    casesForICUByRequestedTimeSevere = int(0.05 * infectionsByRequestedTimeSevere)
+
+    # 2% of infectionsByRequestedTime that require Ventilators.
+    casesForVentilatorsByRequestedTimeImpact = int(0.02 * infectionsByRequestedTimeImpact)
+    casesForVentilatorsByRequestedTimeSevere = int(0.02 * infectionsByRequestedTimeSevere)
+
+
+
     output = {
           "data": data,
           "estimate": {
-            "impact": {
-                "currentlyInfected": currentlyInfectedImpact,
-                "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
-                "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
-                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact
-                },
-            "severeImpact": {
-                "currentlyInfected": currentlyInfectedSevere,
-                "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
-                "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
-                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere
+                "impact": {
+                    "currentlyInfected": currentlyInfectedImpact,
+                    "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
+                    "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
+                    "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
+                    "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
+                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact
+                    },
+                "severeImpact": {
+                    "currentlyInfected": currentlyInfectedSevere,
+                    "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
+                    "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
+                    "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
+                    "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
+                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere
+                    }
                 }
-            }
           }
 
     return output
+
+
+if __name__ == '__main__':
+    data = json.loads(open("src/input.json").read())
+    output = estimator(data)
+    print(output)
