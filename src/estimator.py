@@ -60,25 +60,25 @@ def estimator(data):
 
     days = timeEstimateDays(data["periodType"], data["timeToElapse"])
 
-    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (days/3))
-    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (days/3))
+    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** int(days/3))
+    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** int(days/3))
 
-    severeCasesByRequestedTimeImpact = (0.15 * infectionsByRequestedTimeImpact)
-    severeCasesByRequestedTimeSevere = (0.15 * infectionsByRequestedTimeSevere)
+    severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
+    severeCasesByRequestedTimeSevere = int(0.15 * infectionsByRequestedTimeSevere)
 
-    availableBeds = (0.35 * data["totalHospitalBeds"])
+    availableBeds = int(0.35 * data["totalHospitalBeds"])
 
-    hospitalBedsByRequestedTimeImpact = math.floor(availableBeds - severeCasesByRequestedTimeImpact)
-    hospitalBedsByRequestedTimeSevere = math.floor(availableBeds - severeCasesByRequestedTimeSevere)
+    hospitalBedsByRequestedTimeImpact = (availableBeds - severeCasesByRequestedTimeImpact)
+    hospitalBedsByRequestedTimeSevere = (availableBeds - severeCasesByRequestedTimeSevere)
 
-    casesForICUByRequestedTimeImpact = math.floor(0.05 * infectionsByRequestedTimeImpact)
-    casesForICUByRequestedTimeSevere = math.floor(0.05 * infectionsByRequestedTimeSevere)
+    casesForICUByRequestedTimeImpact = int(0.05 * infectionsByRequestedTimeImpact)
+    casesForICUByRequestedTimeSevere = int(0.05 * infectionsByRequestedTimeSevere)
 
-    casesForVentilatorsByRequestedTimeImpact = math.floor(0.02 * infectionsByRequestedTimeImpact)
-    casesForVentilatorsByRequestedTimeSevere = math.floor(0.02 * infectionsByRequestedTimeSevere)
+    casesForVentilatorsByRequestedTimeImpact = int(0.02 * infectionsByRequestedTimeImpact)
+    casesForVentilatorsByRequestedTimeSevere = int(0.02 * infectionsByRequestedTimeSevere)
 
-    dollarsInFlightImpact = math.floor((infectionsByRequestedTimeImpact * data["region"]["avgDailyIncomePopulation"] * data["region"]["avgDailyIncomeInUSD"]) / days)
-    dollarsInFlightSevere = math.floor((infectionsByRequestedTimeSevere * data["region"]["avgDailyIncomePopulation"] * data["region"]["avgDailyIncomeInUSD"]) / days)
+    dollarsInFlightImpact = int((infectionsByRequestedTimeImpact * data["region"]["avgDailyIncomePopulation"] * data["region"]["avgDailyIncomeInUSD"]) / days)
+    dollarsInFlightSevere = int((infectionsByRequestedTimeSevere * data["region"]["avgDailyIncomePopulation"] * data["region"]["avgDailyIncomeInUSD"]) / days)
 
 
     output = {
