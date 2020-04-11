@@ -9,7 +9,9 @@ def currentlyInfected(reportedCases):
 
     return impact, severe
 
-def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere, periodType, timeToElapse):
+
+def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere,
+                              periodType, timeToElapse):
     """
         Takes input as currenty infected estimations
         for impact and severe, period type and time
@@ -34,7 +36,10 @@ def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere, 
 
     return impact, severe
 
-def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact, severeCasesByRequestedTimeSevere, totalHospitalBeds):
+
+def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact,
+                                severeCasesByRequestedTimeSevere,
+                                totalHospitalBeds):
     """
         Takes input as severe cases by requested time
         for both impact and severe, and total hospital beds
@@ -46,7 +51,10 @@ def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact, severeCasesByR
 
     return impact, severe
 
-def dollarsInFlight(infectionsByRequestedTimeImpact, infectionsByRequestedTimeSevere, avgDailyIncomeInUSD, avgDailyIncomePopulation, periodType, timeToElapse):
+
+def dollarsInFlight(infectionsByRequestedTimeImpact,
+                    infectionsByRequestedTimeSevere, avgDailyIncomeInUSD,
+                    avgDailyIncomePopulation, periodType, timeToElapse):
     """
      Takes as input the infections by requeste time for impact
      and severe, the average daily income and the population that
@@ -54,15 +62,25 @@ def dollarsInFlight(infectionsByRequestedTimeImpact, infectionsByRequestedTimeSe
      flight for both impact and severe.
     """
     if periodType == "days":
-        impact = int((infectionsByRequestedTimeImpact * avgDailyIncomePopulation * avgDailyIncomeInUSD) / timeToElapse)
-        severe = int((infectionsByRequestedTimeSevere * avgDailyIncomePopulation * avgDailyIncomeInUSD) / timeToElapse)
+        impact = int((infectionsByRequestedTimeImpact *
+                      avgDailyIncomePopulation *
+                      avgDailyIncomeInUSD) / timeToElapse)
+        severe = int((infectionsByRequestedTimeSevere *
+                      avgDailyIncomePopulation *
+                      avgDailyIncomeInUSD) / timeToElapse)
     elif periodType == "weeks":
         days = 7 * timeToElapse
-        impact = int((infectionsByRequestedTimeImpact * avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
-        severe = int((infectionsByRequestedTimeSevere * avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
+        impact = int((infectionsByRequestedTimeImpact *
+                      avgDailyIncomePopulation *
+                      avgDailyIncomeInUSD) / days)
+        severe = int((infectionsByRequestedTimeSevere *
+                      avgDailyIncomePopulation *
+                      avgDailyIncomeInUSD) / days)
     else:   # For months. Days default to 30 days.
-        impact = int((infectionsByRequestedTimeImpact * avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
-        severe = int((infectionsByRequestedTimeSevere * avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
+        impact = int((infectionsByRequestedTimeImpact *
+                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
+        severe = int((infectionsByRequestedTimeSevere *
+                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / 30)
 
     return impact, severe
 
@@ -72,13 +90,13 @@ def estimator(data):
         Takes input data and returns it in a
         specified format.
     """
-    currentlyInfectedImpact, currentlyInfectedSevere = currentlyInfected(data["reportedCases"])
+    currentlyInfectedImpact, currentlyInfectedSevere = currentlyInfected(
+                                                        data["reportedCases"])
     infectionsByRequestedTimeImpact, infectionsByRequestedTimeSevere = infectionsByRequestedTime(
                                                                             currentlyInfectedImpact,
                                                                             currentlyInfectedSevere,
                                                                             data["periodType"],
-                                                                            data["timeToElapse"]
-                                                                            )
+                                                                            data["timeToElapse"])
 
     # 15% of infectionsByRequestedTime. Positives
     severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
@@ -87,8 +105,7 @@ def estimator(data):
     hospitalBedsByRequestedTimeImpact, hospitalBedsByRequestedTimeSevere = hospitalBedsByRequestedTime(
                                                                                 severeCasesByRequestedTimeImpact,
                                                                                 severeCasesByRequestedTimeSevere,
-                                                                                data["totalHospitalBeds"]
-                                                                                )
+                                                                                data["totalHospitalBeds"])
 
     # 5% of infectionsByRequestedTime that require ICU care.
     casesForICUByRequestedTimeImpact = int(0.05 * infectionsByRequestedTimeImpact)
@@ -103,31 +120,26 @@ def estimator(data):
                                                                    data["region"]["avgDailyIncomeInUSD"],
                                                                    data["region"]["avgDailyIncomePopulation"],
                                                                    data["periodType"],
-                                                                   data["timeToElapse"]
-                                                                   )
-
-
+                                                                   data["timeToElapse"])
 
     output = {
-          "data": data,
-          "impact": {
-              "currentlyInfected": currentlyInfectedImpact,
-              "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
-              "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
-              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
-              "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
-              "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact,
-              "dollarsInFlight": dollarsInFlightImpact
-              },
-          "severeImpact": {
-              "currentlyInfected": currentlyInfectedSevere,
-              "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
-              "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
-              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
-              "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
-              "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
-              "dollarsInFlight": dollarsInFlightSevere
-              }
-          }
+            "data": data,
+            "impact": {
+                "currentlyInfected": currentlyInfectedImpact,
+                "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
+                "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
+                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
+                "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
+                "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact,
+                "dollarsInFlight": dollarsInFlightImpact},
+            "severeImpact": {
+                "currentlyInfected": currentlyInfectedSevere,
+                "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
+                "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
+                "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
+                "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
+                "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
+                "dollarsInFlight": dollarsInFlightSevere}
+            }
 
     return output
