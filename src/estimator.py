@@ -47,8 +47,8 @@ def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact,
         and returns total beds for estimated positive patients.
     """
     available = int(0.35 * totalHospitalBeds)
-    impact = available - severeCasesByRequestedTimeImpact
-    severe = available - severeCasesByRequestedTimeSevere
+    impact = severeCasesByRequestedTimeImpact - available
+    severe = severeCasesByRequestedTimeSevere - available
 
     return impact, severe
 
