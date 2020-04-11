@@ -16,40 +16,6 @@ def timeEstimateDays(periodType, timeToElapse):
     return days
 
 
-def dollarsInFlight(infectionsByRequestedTimeImpact,
-                    infectionsByRequestedTimeSevere, avgDailyIncomeInUSD,
-                    avgDailyIncomePopulation, periodType, timeToElapse):
-    """
-     Takes as input the infections by requeste time for impact
-     and severe, the average daily income and the population that
-     get's this income, and period type time to elapse. Returns daily
-     flight for both impact and severe.
-    """
-    if periodType == "days":
-        impact = int((infectionsByRequestedTimeImpact *
-                      avgDailyIncomePopulation *
-                      avgDailyIncomeInUSD) / timeToElapse)
-        severe = int((infectionsByRequestedTimeSevere *
-                      avgDailyIncomePopulation *
-                      avgDailyIncomeInUSD) / timeToElapse)
-    elif periodType == "weeks":
-        days = 7 * timeToElapse
-        impact = int((infectionsByRequestedTimeImpact *
-                      avgDailyIncomePopulation *
-                      avgDailyIncomeInUSD) / days)
-        severe = int((infectionsByRequestedTimeSevere *
-                      avgDailyIncomePopulation *
-                      avgDailyIncomeInUSD) / days)
-    else:
-        days = 30 * timeToElapse
-        impact = int((infectionsByRequestedTimeImpact *
-                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
-        severe = int((infectionsByRequestedTimeSevere *
-                      avgDailyIncomePopulation * avgDailyIncomeInUSD) / days)
-
-    return impact, severe
-
-
 def estimator(data):
     """
         Takes input data and returns it in a
@@ -66,7 +32,7 @@ def estimator(data):
     severeCasesByRequestedTimeImpact = int(0.15 * infectionsByRequestedTimeImpact)
     severeCasesByRequestedTimeSevere = int(0.15 * infectionsByRequestedTimeSevere)
 
-    availableBeds = int(0.35 * data["totalHospitalBeds"])
+    availableBeds = (0.35 * data["totalHospitalBeds"])
 
     hospitalBedsByRequestedTimeImpact = (availableBeds - severeCasesByRequestedTimeImpact)
     hospitalBedsByRequestedTimeSevere = (availableBeds - severeCasesByRequestedTimeSevere)
