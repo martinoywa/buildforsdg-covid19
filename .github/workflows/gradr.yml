@@ -34,6 +34,7 @@ jobs:
         flake8 ./src/ --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 ./src/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
   ch-1:
     needs: lint
     name: audit challenge 1
@@ -76,6 +77,7 @@ jobs:
     - name: Run Audits
       run: |
         yarn jest audits/ch-1 --json --outputFile=audits/ch-1.json --noStackTrace
+
     - name: Report Audits
       uses: BuildforSDG-Cohort1-Assessment/jest-out@v1
       with:
