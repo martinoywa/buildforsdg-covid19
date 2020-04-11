@@ -34,8 +34,8 @@ def estimator(data):
 
     availableBeds = (0.35 * data["totalHospitalBeds"])
 
-    hospitalBedsByRequestedTimeImpact = (availableBeds - severeCasesByRequestedTimeImpact)
-    hospitalBedsByRequestedTimeSevere = (availableBeds - severeCasesByRequestedTimeSevere)
+    hospitalBedsByRequestedTimeImpact = int(availableBeds - severeCasesByRequestedTimeImpact)
+    hospitalBedsByRequestedTimeSevere = int(availableBeds - severeCasesByRequestedTimeSevere)
 
     casesForICUByRequestedTimeImpact = int(0.05 * infectionsByRequestedTimeImpact)
     casesForICUByRequestedTimeSevere = int(0.05 * infectionsByRequestedTimeSevere)
