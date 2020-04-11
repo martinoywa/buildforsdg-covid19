@@ -1,6 +1,3 @@
-import json
-
-
 def currentlyInfected(reportedCases):
     """
         Takes input as reportedCases and
@@ -113,7 +110,7 @@ def estimator(data):
 
     output = {
           "data": data,
-
+          "estimate": {
                 "impact": {
                     "currentlyInfected": currentlyInfectedImpact,
                     "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
@@ -132,7 +129,7 @@ def estimator(data):
                     "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
                     "dollarsInFlight": dollarsInFlightSevere
                     }
-            
+                }
           }
 
     return output
