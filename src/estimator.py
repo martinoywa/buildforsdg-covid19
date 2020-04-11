@@ -110,26 +110,24 @@ def estimator(data):
 
     output = {
           "data": data,
-          "estimate": {
-                "impact": {
-                    "currentlyInfected": currentlyInfectedImpact,
-                    "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
-                    "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
-                    "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
-                    "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
-                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact,
-                    "dollarsInFlight": dollarsInFlightImpact
-                    },
-                "severeImpact": {
-                    "currentlyInfected": currentlyInfectedSevere,
-                    "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
-                    "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
-                    "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
-                    "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
-                    "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
-                    "dollarsInFlight": dollarsInFlightSevere
-                    }
-                }
+          "impact": {
+              "currentlyInfected": currentlyInfectedImpact,
+              "infectionsByRequestedTime": infectionsByRequestedTimeImpact,
+              "severeCasesByRequestedTime": severeCasesByRequestedTimeImpact,
+              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
+              "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
+              "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact,
+              "dollarsInFlight": dollarsInFlightImpact
+              },
+          "severeImpact": {
+              "currentlyInfected": currentlyInfectedSevere,
+              "infectionsByRequestedTime": infectionsByRequestedTimeSevere,
+              "severeCasesByRequestedTime": infectionsByRequestedTimeSevere,
+              "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
+              "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
+              "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
+              "dollarsInFlight": dollarsInFlightSevere
+              }
           }
 
     return output
