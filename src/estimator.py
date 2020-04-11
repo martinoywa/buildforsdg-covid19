@@ -46,9 +46,9 @@ def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact,
         for both impact and severe, and total hospital beds
         and returns total beds for estimated positive patients.
     """
-    available = int(0.35 * totalHospitalBeds)
-    impact = severeCasesByRequestedTimeImpact - available
-    severe = severeCasesByRequestedTimeSevere - available
+    available = int((0.35 * totalHospitalBeds))
+    impact = available - severeCasesByRequestedTimeImpact
+    severe = available - severeCasesByRequestedTimeSevere
 
     return impact, severe
 
@@ -100,10 +100,10 @@ def estimator(data):
                                   data["timeToElapse"])
 
     # 15% of infectionsByRequestedTime. Positives
-    severeCasesByRequestedTimeImpact = int(0.15 *
-                                           infectionsByRequestedTimeImpact)
-    severeCasesByRequestedTimeSevere = int(0.15 *
-                                           infectionsByRequestedTimeSevere)
+    severeCasesByRequestedTimeImpact = int((0.15 *
+                                           infectionsByRequestedTimeImpact))
+    severeCasesByRequestedTimeSevere = int((0.15 *
+                                           infectionsByRequestedTimeSevere))
 
     hospitalBedsByRequestedTimeImpact, hospitalBedsByRequestedTimeSevere = \
         hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact,
