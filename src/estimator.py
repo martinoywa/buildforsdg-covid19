@@ -136,9 +136,3 @@ def estimator(data):
           }
 
     return output
-
-
-if __name__ == '__main__':
-    data = json.loads(open("src/input.json").read())
-    output = estimator(data)
-    print(output)
