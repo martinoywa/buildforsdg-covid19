@@ -71,24 +71,15 @@ def estimator(data):
     hospitalBedsByRequestedTimeImpact = availableBeds - severeCasesByRequestedTimeImpact
     hospitalBedsByRequestedTimeSevere = availableBeds - severeCasesByRequestedTimeSevere
 
-    # 5% of infectionsByRequestedTime that require ICU care.
-    casesForICUByRequestedTimeImpact = int(0.05 *
-                                           infectionsByRequestedTimeImpact)
-    casesForICUByRequestedTimeSevere = int(0.05 *
-                                           infectionsByRequestedTimeSevere)
+    casesForICUByRequestedTimeImpact = math.floor(0.05 * infectionsByRequestedTimeImpact)
+    casesForICUByRequestedTimeSevere = math.floor(0.05 * infectionsByRequestedTimeSevere)
 
-    # 2% of infectionsByRequestedTime that require Ventilators.
-    casesForVentilatorsByRequestedTimeImpact = \
-        int(0.02 * infectionsByRequestedTimeImpact)
-    casesForVentilatorsByRequestedTimeSevere = \
-        int(0.02 * infectionsByRequestedTimeSevere)
+    casesForVentilatorsByRequestedTimeImpact = math.floor(0.02 * infectionsByRequestedTimeImpact)
+    casesForVentilatorsByRequestedTimeSevere = math.floor(0.02 * infectionsByRequestedTimeSevere)
 
-    dollarsInFlightImpact, dollarsInFlightSevere = \
-        dollarsInFlight(infectionsByRequestedTimeImpact,
-                        infectionsByRequestedTimeSevere,
-                        data["region"]["avgDailyIncomeInUSD"],
-                        data["region"]["avgDailyIncomePopulation"],
-                        data["periodType"], data["timeToElapse"])
+    dollarsInFlightImpact = math.floor((infectionsByRequestedTimeImpact * data["avgDailyIncomePopulation"] * data["avgDailyIncomeInUSD"]) / days)
+    dollarsInFlightSevere = math.floor((infectionsByRequestedTimeSevere * data["avgDailyIncomePopulation"] * data["avgDailyIncomeInUSD"]) / days)
+
 
     output = {
             "data": data,
@@ -99,8 +90,7 @@ def estimator(data):
                 "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeImpact,
 
                 "casesForICUByRequestedTime": casesForICUByRequestedTimeImpact,
-                "casesForVentilatorsByRequestedTime":
-                    casesForVentilatorsByRequestedTimeImpact,
+                "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeImpact,
                 "dollarsInFlight": dollarsInFlightImpact},
             "severeImpact": {
                 "currentlyInfected": currentlyInfectedSevere,
@@ -109,8 +99,7 @@ def estimator(data):
                 "hospitalBedsByRequestedTime": hospitalBedsByRequestedTimeSevere,
 
                 "casesForICUByRequestedTime": casesForICUByRequestedTimeSevere,
-                "casesForVentilatorsByRequestedTime":
-                    casesForVentilatorsByRequestedTimeSevere,
+                "casesForVentilatorsByRequestedTime": casesForVentilatorsByRequestedTimeSevere,
                 "dollarsInFlight": dollarsInFlightSevere}
             }
 
