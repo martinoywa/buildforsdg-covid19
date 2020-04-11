@@ -1,41 +1,16 @@
-def currentlyInfected(reportedCases):
+def timeEstimateDays(periodType, timeToElapse):
     """
-        Takes input as reportedCases and
-        returns currenty infected estimations
-        for impact and severe.
+        Takes in period type and time to elapse
+        and returns the days equivalent.
     """
-    impact = reportedCases * 10
-    severe = reportedCases * 50
-
-    return impact, severe
-
-
-def infectionsByRequestedTime(currentlyInfectedImpact, currentlyInfectedSevere,
-                              periodType, timeToElapse):
-    """
-        Takes input as currenty infected estimations
-        for impact and severe, period type and time
-        to elapse returns infections by requested time
-        for impact and severe.
-    """
-
-    # Currently infected doubles every 3 days.
     if periodType.lower() == "days":
-        factor = int(timeToElapse/3)
-        impact = currentlyInfectedImpact * pow(2, factor)
-        severe = currentlyInfectedSevere * pow(2, factor)
+        days = timeToElapse
     elif periodType.lower() == "weeks":
         days = 7 * timeToElapse
-        factor = int(days/3)
-        impact = currentlyInfectedImpact * pow(2, factor)
-        severe = currentlyInfectedSevere * pow(2, factor)
     else:
         days = 30 * timeToElapse
-        factor = int(days/3)
-        impact = currentlyInfectedImpact * pow(2, factor)
-        severe = currentlyInfectedSevere * pow(2, factor)
 
-    return impact, severe
+    return days
 
 
 def hospitalBedsByRequestedTime(severeCasesByRequestedTimeImpact,
@@ -92,12 +67,13 @@ def estimator(data):
         Takes input data and returns it in a
         specified format.
     """
-    currentlyInfectedImpact, currentlyInfectedSevere = currentlyInfected(
-                                                        data["reportedCases"])
-    infectionsByRequestedTimeImpact, infectionsByRequestedTimeSevere = \
-        infectionsByRequestedTime(currentlyInfectedImpact,
-                                  currentlyInfectedSevere, data["periodType"],
-                                  data["timeToElapse"])
+    currentlyInfectedImpact = data["reportedCases"] * 10
+    currentlyInfectedSevere = data["reportedCases"] * 50
+
+    days = timeEstimateDays(data["periodType"], data["timeToElapse"])
+
+    infectionsByRequestedTimeImpact = currentlyInfectedImpact * (2 ** (int(days/3)))
+    infectionsByRequestedTimeSevere = currentlyInfectedSevere * (2 ** (int(days/3)))
 
     # 15% of infectionsByRequestedTime. Positives
     severeCasesByRequestedTimeImpact = int((0.15 *
