@@ -128,8 +128,8 @@ def estimator(data):
                         data["periodType"], data["timeToElapse"])
 
     output = {
-            "data": data,
             "estimate": {
+                "data": data,
                 "impact": {
                     "currentlyInfected": currentlyInfectedImpact,
                     "infectionsByRequestedTime":
