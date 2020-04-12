@@ -29,3 +29,7 @@ def xml_index():
         output = estimator(data)
 
         return Response(dicttoxml(output),  mimetype="text/xml")
+
+
+if __name__ == "__main__":
+    app.run()
