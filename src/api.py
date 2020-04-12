@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route("/api/v1/on-covid-19/json", methods=["GET", "POST"])
 def json_index():
     if request.method == "GET":
-        return j
+        return jsonify("JSON working")
 
     if request.method == "POST":
         data = request.get_json()
