@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, Response
 from src.estimator import estimator
+from dicttoxml import dicttoxml
 
 
 app = Flask(__name__)
@@ -27,7 +28,7 @@ def xml_index():
         data = request.get_json()
         output = estimator(data)
 
-        return Response(output,  content_type="application/xml")
+        return Response(dicttoxml(output),  content_type="application/xml")
 
 
 if __name__ == "__main__":
