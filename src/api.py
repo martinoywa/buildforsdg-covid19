@@ -1,13 +1,19 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from estimator import estimator
 
 
 app = Flask(__name__)
 
 
-@app.route("/api/v1/on-covid-19")
-@app.route("/api/v1/on-covid-19/json")
+@app.route("/api/v1/on-covid-19/", methods=["GET", "POST"])
+@app.route("/api/v1/on-covid-19/json", methods=["GET", "POST"])
 def json_index():
-    return "JSON working"
+    if request.method == "GET":
+        return jsonify("JSON working")
+    if request.method == "POST":
+        data = request.get_json()
+
+        return jsonify(data)
 
 
 @app.route("/api/v1/on-covid-19/xml")
