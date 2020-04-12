@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route("/api/v1/on-covid-19/json", methods=["GET", "POST"])
 def json_index():
     if request.method == "GET":
-        return ""
+        return jsonify("")
 
     if request.method == "POST":
         data = request.get_json()
@@ -22,7 +22,7 @@ def json_index():
 @app.route("/api/v1/on-covid-19/xml", methods=["GET", "POST"])
 def xml_index():
     if request.method == "GET":
-        return ""
+        return Response("", content_type="application/xml")
 
     if request.method == "POST":
         data = request.get_json()
