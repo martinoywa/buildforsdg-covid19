@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from estimator import estimator
+from dicttoxml import dicttoxml
 
 
 app = Flask(__name__)
@@ -9,7 +10,7 @@ app = Flask(__name__)
 @app.route("/api/v1/on-covid-19/json", methods=["GET", "POST"])
 def json_index():
     if request.method == "GET":
-        return jsonify("JSON working")
+        return j
 
     if request.method == "POST":
         data = request.get_json()
@@ -18,9 +19,16 @@ def json_index():
         return jsonify(output)
 
 
-@app.route("/api/v1/on-covid-19/xml")
+@app.route("/api/v1/on-covid-19/xml", methods=["GET", "POST"])
 def xml_index():
-    return "XML working"
+    if request.method == "GET":
+        return Response("XML working",  mimetype="text/xml")
+
+    if request.method == "POST":
+        data = request.get_json()
+        output = estimator(data)
+
+        return Response(dicttoxml(output),  mimetype="text/xml")
 
 
 if __name__ == '__main__':
