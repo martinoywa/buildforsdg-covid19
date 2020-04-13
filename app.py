@@ -71,7 +71,7 @@ def xml_index():
 @app.route("/api/v1/on-covid-19/logs")
 def logs_index():
     with open(dir, "r") as f:
-        return "".join(f.readlines())
+        return Response("".join(f.readlines()), content_type="application/text")
 
 
 if __name__ == "__main__":
