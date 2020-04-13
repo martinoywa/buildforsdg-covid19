@@ -1,4 +1,6 @@
 # Challenge 5
+import os
+
 import logging
 import time
 
@@ -6,6 +8,9 @@ from flask import Flask, request, g, jsonify, Response
 from src.estimator import estimator
 from dicttoxml import dicttoxml
 
+
+if "logs.txt" in os.listdir():
+    os.remove("logs.txt")
 
 app = Flask(__name__)
 # initialise log save file
@@ -61,7 +66,7 @@ def logs_index():
         Handles Logging
     """
     if request.method != "GET":
-        return jsonify({"error": "Method not arrowed"}), 405
+        return Response("Method not arrowed", mimetype="text/plain", status=405)
 
     data_logs = []  # logging list
     with open("logs.txt", "rt") as f:   # read logs file and take cycles
