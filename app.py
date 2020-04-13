@@ -5,74 +5,68 @@ from dicttoxml import dicttoxml
 import time
 from flask import g
 
-import os
-from random import randint
+import logging
 
 app = Flask(__name__)
+logging.basicConfig(filename="logs.txt", level=logging.INFO)
 
-app.config["LOGS"] = "logs/"
 
-if "logs" not in os.listdir():
-    os.mkdir(app.config["LOGS"])
-
-rand = randint(0, 1000000000)
-dir = os.path.join(app.config["LOGS"], "logs"+str(rand)+".txt")
-
-def logger(status):
-    now = time.time()
-    duration = int((time.time() - g.start) * 1000)
-    method = request.method
-    path = request.path
-
-    with open(dir, "a") as f:
-        f.write(f"{method}\t\t{path}\t\t{status}\t\t{duration} ms\n")
+@app.before_request
+def get_time():
+    g.start = time.time()
 
 
 @app.route("/api/v1/on-covid-19/", methods=["GET", "POST"])
 @app.route("/api/v1/on-covid-19/json", methods=["GET", "POST"])
 def json_index():
-    g.start = time.time()
-
     if request.method == "GET":
         res = Response("", content_type="application/json")
-        status = res.status_code
-        logger(status)
-        return res
+        return res, 200
 
 
     if request.method == "POST":
         data = request.get_json()
         output = estimator(data)
-        res = Response(jsonify(output), content_type="application/json")
-        status = res.status_code
-        logger(status)
-        return jsonify(output)
+        return jsonify(output), 200
 
 
 @app.route("/api/v1/on-covid-19/xml", methods=["GET", "POST"])
 def xml_index():
-    g.start = time.time()
-
     if request.method == "GET":
         res = Response("", content_type="application/xml")
-        status = res.status[:3]
-        logger(status)
-        return res
+        return res, 200
 
     if request.method == "POST":
         data = request.get_json()
         output = estimator(data)
         res = Response(dicttoxml(output, attr_type=False),  content_type="application/xml")
-        status = res.status[:3]
-        logger(status)
-        return res
+        return res, 200
 
 
-@app.route("/api/v1/on-covid-19/logs")
+@app.route("/api/v1/on-covid-19/logs", methods=["GET", "POST"])
 def logs_index():
-    with open(dir, "r") as f:
-        return Response("".join(f.readlines()), content_type="application/text")
+    if request.method != "GET":
+        return jsonify({"error": "Method not arrowed"}), 405
 
+    data_logs = []
+    with open("logs.txt", "rt") as f:
+        data = f.readlines()
+    for line in data:
+        if "root" in line and "404" not in line:
+            data_logs.append(line[10:])
+
+    return Response("".join(data_logs), mimetype="text/plain")
+
+
+@app.after_request
+def log_request_info(response):
+    difference = int((time.time() - g.start) * 1000)
+    status_code = response.status.split()[0]
+    logging.info(
+        f"{request.method}\t\t{request.path}\t\t{status_code}\t\t{str(difference).zfill(2)}ms\n"
+    )
+
+    return response
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
