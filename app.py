@@ -77,7 +77,7 @@ def logs_index():
 def log_request_info(response):
     """
         Gets response as input and returns the logging
-        details.
+        details
     """
     difference = int((time.time() - g.start) * 1000)
     status_code = response.status.split()[0]
