@@ -13,7 +13,7 @@ node_modules/
 audits/
 
 # venv
-.venv/
+venv/
 
 # __pycache__
 src/__pycache__
