@@ -27,8 +27,6 @@ def logger(status):
     with open(dir, "a") as f:
         f.write(f"{method}\t\t{path}\t\t{status}\t\t{duration} ms\n")
 
-    return dir
-
 
 @app.route("/api/v1/on-covid-19/", methods=["GET", "POST"])
 @app.route("/api/v1/on-covid-19/json", methods=["GET", "POST"])
@@ -70,7 +68,7 @@ def xml_index():
         return res
 
 
-@app.route("/api/v1/on-covid-19/logs", methods=["GET"])
+@app.route("/api/v1/on-covid-19/logs")
 def logs_index():
     with open(dir, "r") as f:
         return "".join(f.readlines())
