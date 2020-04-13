@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response, Request
+from flask import Flask, request, jsonify, Response
 from src.estimator import estimator
 from dicttoxml import dicttoxml
 
@@ -7,8 +7,6 @@ from flask import g
 
 import os
 from random import randint
-
-import requests
 
 app = Flask(__name__)
 
