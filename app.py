@@ -25,7 +25,7 @@ def logger(status):
     path = request.path
 
     with open(dir, "a") as f:
-        f.write(f"{method}\t\t{path}\t\t{status}\t\t{duration} ms\n")
+        f.write(f"{method}\t\t{path}\t\t{status}\t\t{duration}ms\n")
 
 
 @app.route("/api/v1/on-covid-19/", methods=["GET", "POST"])
