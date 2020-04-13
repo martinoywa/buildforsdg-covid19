@@ -25,7 +25,7 @@ def logger(status):
     path = request.path
 
     with open(dir, "a") as f:
-        f.write(f"{method}\t\t{path}\t\t{status}\t\t{duration}\n")
+        f.write(f"{method}\t\t{path}\t\t{status}\t\t{duration} ms\n")
 
     return dir
 
@@ -77,4 +77,4 @@ def logs_index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
